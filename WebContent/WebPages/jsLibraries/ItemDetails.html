@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head> 
+        <title>Mobile Online Shopping</title> 
+        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 		
+ 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">
+		<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+		<link type="text/css" rel="stylesheet" href="css/MyStyles.css" />
+        <script src="js/ProductLine.Provider.js" type="text/javascript"></script>
+        <script src="js/ProductLine.Utilities.js" type="text/javascript"></script>  
+    </head><body></body>
+			<div data-role="page" id="itemDetailsPage" data-theme="c">
+            <div data-role="header" data-theme="b">
+                <a href="#itemsPage" data-icon="back">Return</a>
+                <h1>Item Details</h1>
+            </div><!-- /header -->
+            <div data-role="content" data-theme="c">  
+                <div id="itemDetail"></div>
+            </div><!-- /content -->
+            <div data-role="footer" data-theme="b">
+               <h4>FindStuff@Wiu.edu</h4>
+            </div><!-- /footer -->
+	<!-- /page -->
+         <script type="text/javascript">
+         
+         	$("#itemDetailsPage").on("pageshow", function () {
+         		//alert("here");
+         		var Item_Id = ProductLine.Provider.parsePathParam()["Item"];
+         		var Sub_Cat_Id = ProductLine.Provider.parsePathParam()["Sub_Cat"];
+         		
+         		//var Sub_Cat_Id = (($(this).data("url").indexOf("?") > 0) ? $(this).data("url") : window.location.href).replace(/.*Sub_Cat=/, "");
+         		//var Item_Id = (($(this).data("url").indexOf("?") > 0) ? $(this).data("url") : window.location.href).replace(/.*Item=/, "");
+         		console.log("1 Sub_Cat_Id  : " + Sub_Cat_Id);
+         		console.log("1 Item_Id : " + Item_Id);
+         		//console.log("2 Sub_Cat_Id  : " + Sub_Cat_Id);
+         		//console.log("2 Item_Id : " + Item_Id);
+			    ProductLine.Provider.ShowPageLoading();
+				ProductLine.Provider.GetCallService(ProductLine.Provider.defaultOptions.GetItemDetailsUri(Sub_Cat_Id,Item_Id), Sub_Cat_Id, displayItemDetails);
+        		ProductLine.Provider.HidePageLoading();
+			});
+
+			 displayItemDetails = function(item) {
+			 	  var itemDetail = "";
+		          itemDetail = itemDetail.concat("<img src=" + item.Item_Img +" alt="+ item.Item_Name );
+		          itemDetail = itemDetail.concat(
+		                    "<div class='detail'>" +
+		                    "<div class='field'> Name</div>" +
+		                    "<div class='value'>" + item.Item_Name + "</div>" +
+		                    "</div>");  
+		          itemDetail = itemDetail.concat(
+	                    "<div class='detail'>" +
+	                    "<div class='field'> Description </div>" +
+	                    "<div class='value'>" + item.Item_Desc + "</div>" +
+	                    "</div>");  
+		          itemDetail = itemDetail.concat(
+	                    "<div class='detail'>" +
+	                    "<div class='field'> Price </div>" +
+	                    "<div class='value'>" + item.Item_Price + "</div>" +
+	                    "</div>");   
+		        
+	
+		        $("#itemDetail").empty().append(itemDetail);
+	    };
+	    
+	    /* function placeItemDetail(itemDetail, detail){
+	    	itemDetail = itemDetail.concat(
+	                    "<div class='detail'>" +
+	                    "<div class='field'> Price </div>" +
+	                    "<div class='value'>" + detail + "</div>" +
+	                    "</div>"); 
+	         return itemDetail;
+	    } */
+			</script>
+			</div>
+	</html>

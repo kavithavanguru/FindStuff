@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+    <head> 
+        <title>Mobile Online Shopping</title> 
+        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 		<link rel="stylesheet" href="http://demos.jquerymobile.com/1.2.0/css/themes/default/jquery.mobile-1.2.0.css">
+ 		<link rel="stylesheet" href=http://demos.jquerymobile.com/1.2.0/docs/_assets/css/jqm-docs.css>
+ 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">
+		<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+		<link type="text/css" rel="stylesheet" href="css/MyStyles.css" />
+		<!--  <script src="js/ProductLine.Provider.js" type="text/javascript"></script>
+		<script src="js/ProductLine.UserContext.js" type="text/javascript"></script>
+		<script src="js/ProductLine.ShoppingCart.js" type="text/javascript"></script>-->
+           </head><body>
+	<!-- Start of first page: #one -->
+	 <div data-role="page" id="userProfile">
+		 <div data-role="header" data-theme="b">
+			<div data-role="navbar">
+				<ul>
+					<li id="Profile"><a href="UserProfile.html" data-icon="star" class="ui-btn-active">My Profile</a></li>
+					<li id="Shopping"><a href="Index.html" data-icon="grid">Shopping</a></li>
+					<li id="Orders"><a href="#navpanel" data-role="button" class="ui-icon-shop" data-icon="bars" data-iconpos="notext" data-theme="b" data-inline="true">Options</a></li>
+				</ul>
+			</div><!-- /navbar -->
+	  	</div>
+		<!-- /header -->
+		<div data-role="main" class="ui-content">
+		 <div data-demo-html="true">
+			 <div data-role="panel" id="navpanel" data-theme="a"
+		         data-display="overlay" data-position="right">
+		        <div data-role="controlgroup" >
+		            <a href="CartItems.html" data-role="button" data-theme="b" >My Cart</a>
+		            <a href="#" data-role="button" data-theme="b" >help</a>
+		            <a href="#" data-role="button" data-theme="b" >Logout</a>
+		        </div>
+		    </div>
+			<div data-role="collapsible" id ="personalInfoDiv" data-content-theme="c">		
+				<h3 id ="personalInfoHeader">Personal Info</h3>
+				<div id="readOnlyPersonalInfo">
+					<div data-role="fieldcontain">
+						 <label for="FirstName"><strong>First Name</strong></label>
+						 <label id="FirstName"></label>
+			        	 <!-- <p id="FirstName" class="FirstName"> </p> -->
+			        </div>
+			        <div data-role="fieldcontain">
+						 <label for="LastName"><strong>Last Name</strong></label>
+			        	 <label id="LastName" class="LastName"> </label>
+			        </div>
+			        <div data-role="fieldcontain">
+						 <label for="Email"><strong>Email</strong></label>
+			        	 <label id="Email" class="Email">  </label>
+			        </div>
+			        <div data-role="fieldcontain">
+						 <label for="Phone"><strong>Cell Phone</strong></label>
+			        	 <label id="Phone" class="Phone"> </label>
+			        </div>
+			        
+					 <input type="button" id="editPersonalInfoBtn" data-role="button" data-icon="edit" data-theme="b" data-inline="true" value="Edit"/>
+				</div>
+				<div id="editablePersonalInfo" class="ui-screen-hidden">
+					<div data-role="fieldcontain">
+						 <label for="FirstName"><strong>First Name</strong></label>
+			        	  <input type="text" name="FirstName" id= "FirstName" value=""  />
+			        </div>
+			        <div data-role="fieldcontain">
+						 <label for="LastName"><strong>Last Name</strong></label>
+			        	  <input type="text" name="LastName" id= "LastName" value=""  />
+			        </div>
+			        <div data-role="fieldcontain">
+						 <label for="Email"><strong>Email</strong></label>
+			        	 <input type="text" name="Email" id= "Email" value=""  />
+			        </div>
+			        <div data-role="fieldcontain">
+						 <label for="Phone"><strong>Cell Phone</strong></label>
+			        	  <input type="text" name="Phone" id= "Phone" value=""  />
+			        </div>
+			        
+					 <input type="button" id="savePersonalInfoBtn" data-role="button" data-icon="check" data-theme="b" data-inline="true" value="Submit"/>
+					 <input type="reset"  class="cancelChanges" id="cancelPersonalInfoBtn"  data-icon="delete" data-theme="b" data-inline="true" value="Cancel"/>
+				</div>
+			</div>
+			
+		   
+         </div><!-- /demo-html --> 		 
+		</div>
+
+		<!-- /content -->
+		<div data-role="footer" data-theme="b">
+		    <h1>FindStuff@Wiu.edu</h1>
+		 </div>
+		<!-- /footer -->
+
+	<!-- /page -->
+         <script type="text/javascript">
+         
+         	  var ApplicantObj = {
+         				ApplicantId:0,
+         				LastName: "Vanguru",
+         				FirstName:"Kavitha" ,
+         				Address1:"",
+         				Address2:"",
+         				State:"",
+         				Zip:"",
+         				Phone: "309-566-9563",
+         				Email:"kr-vanguru@wiu.edu",
+         				UserName:"",
+         				Password:""
+         		};
+         	 
+         	 function populateFields(){
+          	  	$.each(ApplicantObj, function(index, field) {
+          	  	if(index == "paymentInfo"){
+          	  		paymentObj = CustomerObj[index];
+          	  		$.each(paymentObj , function(i, field) {
+          	  			 $("#"+i).text(paymentObj[i]);
+ 	         	  			$("[name="+i+"]").val(paymentObj[i]);
+ 						}); 
+          	  		}
+ 				else{
+          	  		$("#"+index).text(ApplicantObj[index]);
+          	  			$("[name="+index+"]").val(ApplicantObj[index]);
+ 						//console.log(CustomerObj[index]);
+ 					} 
+          	 	 });
+
+          	  };
+         	  function displayResults(data){
+         	  ProductLine.UserContext.Applicant = data;
+         	  populateFields();
+         	  };
+         	  
+			  var viewPersonalInfoBtn = $("#personalInfoHeader");
+			  var readOnlyPersonalInfoDiv = $("#readOnlyPersonalInfo");
+			  var editablePersonalInfoDiv = $("#editablePersonalInfo");
+			  var editPersonalInfoBtn = $("#editPersonalInfoBtn");
+			  
+			  $(document).on("pagebeforeshow","#userProfile",function(event){
+				 if(ProductLine.UserContext.isLoggedIn == false)
+				 		$("#loginErrorMessage").text("Please sign in to view details!");
+			  });
+			  
+         	  $("#userProfile").on("pageshow", function () { 
+         	    populateFields();
+         		viewPersonalInfoBtn.on('click',function(){	
+         			 readOnlyPersonalInfoDiv.removeClass("ui-screen-hidden");
+					 editablePersonalInfoDiv.addClass("ui-screen-hidden");
+				});
+         		editPersonalInfoBtn.on('click',function(){	
+         			 readOnlyPersonalInfoDiv.addClass("ui-screen-hidden");
+					 editablePersonalInfoDiv.removeClass("ui-screen-hidden");
+				});
+				$("#savePersonalInfoBtn").on('click',function(){	
+					ApplicantObj.FirstName  = $("[name=FirstName]").val();
+					ApplicantObj.LastName  = $("[name=LastName]").val();
+					ApplicantObj.Phone  = $("[name=Phone]").val();
+					ApplicantObj.Email  = $("[name=Email]").val();
+         			//ProductLine.Provider.GetCallService("POST",ProductLine.Provider.defaultOptions.updateApplicantUri(), JSON.stringify(ApplicantObj), displayResults);
+         			readOnlyPersonalInfoDiv.removeClass("ui-screen-hidden");
+					editablePersonalInfoDiv.addClass("ui-screen-hidden");
+				});
+				
+				$(".cancelChanges").on('click',function(){	
+					populateFields();
+				});
+				
+				/* $("#Shopping").on('click',function(){	
+				console.log("here");
+					$.mobile.pageContainer.pagecontainer("change", "SubCategoriesNew.html", {
+							  transition: 'slide',
+							  reloadPage    : true,
+							}); 
+				}); */
+				 
+			});	 	
+		</script>
+	</div></body>
+</html>

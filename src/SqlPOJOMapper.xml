@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+  "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ShoppingList">
+
+	<resultMap class="com.wiu.findstuff.dto.Sub_Category" id="subCategoryResultMap">
+		<result property="Sub_Cat_Id" column="Sub_Cat_Id" jdbcType="INTEGER" />
+		<result property="Sub_Cat_Name" column="Sub_Cat_Name" jdbcType="VARCHAR" />
+		<result property="Sub_Cat_Img" column="Sub_Cat_Img" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap class="com.wiu.findstuff.dto.Item" id="itemsUnderSubCategoryMap">
+		<result property="Sub_Cat_Id" column="Sub_Cat_Id" jdbcType="INTEGER" />
+		<result property="Item_Id" column="Item_Id" jdbcType="INTEGER" />
+		<result property="Item_Name" column="Item_Name" jdbcType="VARCHAR" />
+		<result property="Item_Img" column="Item_Img" jdbcType="VARCHAR" />
+		<result property="Item_Price" column="Item_Price" jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap class="com.wiu.findstuff.dto.Item" id="itemDetailsMap">
+		<result property="Sub_Cat_Id" column="Sub_Cat_Id" jdbcType="INTEGER" />
+		<result property="Item_Id" column="Item_Id" jdbcType="INTEGER" />
+		<result property="Item_Name" column="Item_Name" jdbcType="VARCHAR" />
+		<result property="Item_Desc" column="Item_Desc" jdbcType="VARCHAR" />
+		<result property="Item_Img" column="Item_Img" jdbcType="VARCHAR" />
+		<result property="Item_Price" column="Item_Price" jdbcType="INTEGER" />
+		<result property="Item_Qty" column="Item_Qty" jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap class="com.wiu.findstuff.dto.Customer" id="customerDetailsMap">
+		<result property="CustomerId" column="Customer_Id" jdbcType="INTEGER" />
+		<result property="LastName" column="LastName" jdbcType="VARCHAR" />
+		<result property="FirstName" column="FirstName" jdbcType="VARCHAR" />
+		<result property="Address1" column="Address1" jdbcType="VARCHAR" />
+		<result property="Address2" column="Address2" jdbcType="VARCHAR" />
+		<result property="State" column="State" jdbcType="VARCHAR" />
+		<result property="Zip" column="Zip" jdbcType="VARCHAR" />
+		<result property="Email" column="Email" jdbcType="VARCHAR" />
+		<result property="UserName" column="UserName" jdbcType="VARCHAR" />
+		<result property="Password" column="Password" jdbcType="VARCHAR" />
+		<result property="Phone" column="Phone" jdbcType="VARCHAR" />
+		<result property="paymentInfo" resultMap="ShoppingList.paymentInfoResultMap"/>
+	</resultMap>
+
+	<resultMap class="com.wiu.findstuff.dto.PaymentInfo" id="paymentInfoResultMap">
+		<result property="PaymentId" column="PaymentId" jdbcType="INTEGER" />
+		<result property="CreditCardNum" column="CreditCardNum" jdbcType="VARCHAR" />
+		<result property="NameOnCard" column="NameOnCard" jdbcType="VARCHAR" />
+		<result property="CVV" column="CVV" jdbcType="VARCHAR" />
+		<result property="ExpiryDate" column="ExpiryDate" jdbcType="VARCHAR" />
+		<result property="CardType" column="CardType" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap class="com.wiu.findstuff.dto.ShoppingCartItem" id="ShoppingCartItemsMap">
+	<result property="customerId" column="customerId" jdbcType="INTEGER" />
+		<result property="shoppingCartItemId" column="shoppingCardId" jdbcType="INTEGER" />
+		<result property="itemId" column="Item_Id" jdbcType="INTEGER" />
+		<result property="SubCatId" column="Sub_Cat_Id" jdbcType="INTEGER" />
+		<result property="itemName" column="Item_Name" jdbcType="VARCHAR" />
+		<result property="size" column="size" jdbcType="INTEGER" />
+		<result property="quantity" column="quantity" jdbcType="INTEGER" />
+		<result property="price" column="price" jdbcType="INTEGER" />
+		<result property="Item_Img" column="Item_Img" jdbcType="VARCHAR" />
+	</resultMap>
+	 <select id="retrieveSubCategories" resultMap="subCategoryResultMap">
+		SELECT Sub_Cat_Id,Sub_Cat_Name,Sub_Cat_Img FROM Sub_Categories
+	</select>
+	
+	<select id="retrieveItems" resultMap="itemsUnderSubCategoryMap"
+	parameterClass="int">
+		SELECT Sub_Cat_Id,Item_Id,Item_Name,Item_Img,Item_Price
+        FROM Items where Sub_Cat_Id = #sub_Cat_Id:NUMERIC#
+	</select>
+	<select id="retrieveItemDetails" resultMap="itemDetailsMap"
+	parameterClass="com.wiu.findstuff.dto.Item">
+		SELECT Sub_Cat_Id, Item_Id,Item_Name, Item_Desc,Item_Img,Item_Price,Item_Qty
+        FROM Items where Sub_Cat_Id = #Sub_Cat_Id:NUMERIC# and Item_Id = #Item_Id:NUMERIC#
+	</select>
+	
+	<insert id = "insertCustomer" parameterClass = "com.wiu.findstuff.dto.Customer">
+		INSERT INTO Customers (LastName,FirstName,Address1,Address2,State,Zip,Email,UserName,Password,Phone) VALUES(#LastName:VARCHAR#,#FirstName:VARCHAR#,#Address1:VARCHAR#,#Address2:VARCHAR#,#State:VARCHAR#,#Zip:VARCHAR#,#Email:VARCHAR#,#UserName:VARCHAR#,#Password:VARCHAR#,#Phone:VARCHAR#) 
+	</insert>
+	
+	<select id="retrieveCustomer" resultMap="customerDetailsMap"
+	parameterClass="com.wiu.findstuff.dto.Customer">
+		SELECT Customer_Id, LastName, FirstName, Address1, Address2, State, Zip, Email, UserName, Password , Phone,PaymentId,CreditCardNum,NameOnCard,CVV,ExpiryDate, CardType
+		FROM Customers c INNER JOIN PaymentInfo p ON c.Customer_Id = p.CustomerId and c.UserName = #UserName:VARCHAR# and c.Password = #Password:VARCHAR#
+	</select>
+	
+	<update id="updateCustomer" parameterClass="com.wiu.findstuff.dto.Customer">
+		Update Customers  set Customers.LastName  = #LastName:VARCHAR#, Customers.FirstName = #FirstName:VARCHAR#, Customers.Address1= #Address1:VARCHAR#, 
+		Customers.Address2 = #Address2:VARCHAR#, Customers.State = #State:VARCHAR#, Customers.Zip = #Zip:VARCHAR#, Customers.Email = #Email:VARCHAR#,
+		Customers.UserName = #UserName:VARCHAR#, Customers.Password = #Password:VARCHAR#, Customers.Phone = #Phone:VARCHAR# where 
+		Customers.Customer_Id = #CustomerId:NUMERIC# 
+		
+	</update> 
+	
+	<update id="updatePayment" parameterClass="com.wiu.findstuff.dto.PaymentInfo">
+		Update PaymentInfo set PaymentInfo.CreditCardNum = #CreditCardNum:VARCHAR#, PaymentInfo.NameOnCard = #NameOnCard:VARCHAR#,
+		PaymentInfo.CVV = #CVV:VARCHAR#, PaymentInfo.ExpiryDate = #ExpiryDate:VARCHAR#, PaymentInfo.CardType = #CardType:VARCHAR# where 
+		PaymentInfo.CustomerId = #CustomerId:NUMERIC# 
+		
+	</update> 
+
+	<insert id = "addToCart" parameterClass = "com.wiu.findstuff.dto.ShoppingCartItem">
+		INSERT INTO ShoppingCartItem (customerId,Sub_Cat_Id,Item_Id,Item_Name,size,quantity,price,Item_Img)
+		 VALUES(#customerId:NUMERIC#,#SubCatId:NUMERIC#,#itemId:NUMERIC#,#itemName:VARCHAR#,#size:VARCHAR#,
+		 #quantity:NUMERIC#,#price:NUMERIC#,#Item_Img:VARCHAR#) 
+	</insert>
+	
+	<select id="retrieveShoppingCart" resultMap="ShoppingCartItemsMap"
+	parameterClass="int">
+		SELECT shoppingCardId,customerId,Sub_Cat_Id,Item_Id,Item_Name,size,quantity,price,Item_Img
+		FROM ShoppingCartItem where customerId =  #CustomerId:NUMERIC# 
+	</select>
+	
+	<!-- <insert id = "insertNewEmpInfo" parameterClass = "com.tcs.mighty.Contact">
+		INSERT INTO employee_contact (first_name,last_name,email_id,id) VALUES(#firstName:VARCHAR#,#lastName:VARCHAR#,#email:VARCHAR#,#id:NUMERIC#) 
+	</insert>
+	<update id="updateEmpLastName" parameterClass= "com.tcs.mighty.Contact">
+		UPDATE employee_contact SET last_name = #lastName:VARCHAR# WHERE id = #id:NUMERIC#
+	</update>
+	<delete id="deleteEmpInfo" parameterClass= "Map">
+	 	DELETE FROM employee_contact WHERE id = #id:NUMERIC#
+	</delete> -->
+</sqlMap>

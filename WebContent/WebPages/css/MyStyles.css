@@ -1,0 +1,31 @@
+@CHARSET "ISO-8859-1";
+#subCategoryList {
+    clear:both;
+}
+ 
+#employeeDetail div {
+    padding-top: 2px;
+    white-space: nowrap;
+}
+ 
+.field {
+    margin-bottom: 0px;
+    font-size: smaller;
+    color: #707070;
+}
+ 
+.value {
+    font-weight: bolder;
+    padding-bottom: 12px;
+    border-bottom: 1px #d0d0d0 solid;
+}
+ 
+.ui-block-a{
+    padding-left: 6px;
+    padding-right: 6px;
+}
+ 
+.ui-grid-a{
+    padding-bottom: 12px;
+    padding-top: -6px;
+}

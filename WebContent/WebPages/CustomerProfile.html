@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+    <head> 
+        <title>Mobile Online Shopping</title> 
+        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 		
+ 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">
+		<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+		<link type="text/css" rel="stylesheet" href="css/MyStyles.css" />
+
+          
+           </head><body>
+	<!-- Start of first page: #one -->
+	 <div data-role="page" id="loginPage">
+		 <div data-role="header" data-theme="b">
+	    	<div id="itemsErrorMessage"></div><h1>FindStuff@Wiu</h1>
+	  	</div>
+		<!-- /header -->
+		<div data-role="main" class="ui-content">
+		 <div data-demo-html="true">
+			<div data-role="collapsible" id ="addressDiv" data-content-theme="c">		
+				<h3 id ="addressHeader">Address Info</h3>
+				<button id = "editAddressInfo" type="submit" data-theme="b">Edit</button>
+
+				<div id="addressFields" data-role="fieldcontain">
+					 <label for="name">Text Input:</label>
+		        	<label for="name">Text Input:</label>
+		        </div>
+				<!-- <div id="addressFields" data-role="fieldcontain">
+					 <label for="name">Text Input:</label>
+		        	<label for="name">Text Input:</label>
+		        </div>
+		        <div id="addressFields" data-role="fieldcontain">
+		         	<label for="name">Text Input:</label>
+		         	<input type="text" name="name" id="name" value="sdf"  />
+		         </div> -->
+		         <input type="button" data-role="button" data-icon="check" data-theme="b" data-inline="true" value="Submit"/>
+				 <input type="button" data-role="button" data-icon="delete" data-theme="b" data-inline="true" value="Cancel"/>
+				
+			</div>
+			
+			<!-- 	PersonalInfo Div -->	
+			
+		   <div data-role="collapsible" id ="personalInfoDiv" data-content-theme="c">
+		   				
+				<h3 id ="personalInfoHeader">Personal Info </h3>  
+
+				<div data-demo-html="true" id="personalInfoFields" >
+						 <input type="button" id="editPersonalInfoBtn" class="readOnlyaddressFields" data-role="button" data-icon="edit" data-theme="b" data-inline="true" value="Edit"/>
+				</div>
+			</div>
+         </div><!-- /demo-html --> 		 
+		</div>
+
+		<!-- /content -->
+		<div data-role="footer" data-theme="b">
+		    <h1>FindStuff@Wiu.edu</h1>
+		 </div>
+		<!-- /footer -->
+
+	<!-- /page -->
+         <script type="text/javascript">
+         
+			  var PersonalInfo  = { 
+					LastName: "Vanguru",
+					FirstName:"Kavitha" ,
+					Phone: "309-566-9563",
+					Email:"kr-vanguru@wiu.edu",
+				};
+			  var AddressInfo = { 
+					Address1:"",
+					Address2:"",
+					State:"",
+					Zip:"",
+				};
+			 var LoginInfo  = { 
+					UserName:"",
+					Password:""
+				};
+				
+				function readOnlyInputHTML(mainDiv, Obj  ){
+					 $.each(Obj, function(index, field) {
+							var divFieldContain = $("<div id='readOnlyaddressFields' data-role='fieldcontain' class='ui-field-contain readOnlyaddressFields'></div>");
+							var fieldLabel = "<label><strong>"+ index +"</strong></label>" ;
+							var inputLabel = "<label name=" + index +" id= "+ index +">"+ field +"</label>" ;										
+						 	var fieldDiv = divFieldContain.append(fieldLabel).append(inputLabel);
+							mainDiv.prepend(fieldDiv);
+					}); 
+					mainDiv.prepend(fieldDiv);
+				};
+				
+				function writeInputHTML(mainDiv, Obj  ){
+					 $.each(Obj, function(index, field) {
+							var divFieldContain = $("<div id='addressFields' class='addressFields' data-role='fieldcontain'></div>");
+							var label = "<label>"+ index +"</label>" ;
+							var inputDiv = $("<div class='ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset'></div>");
+							var input = "";
+							if(index == "Password"){
+						 		 input = "<input type='password' name=" + index +" id= "+ index +" value=''  />";
+						 	}else{
+						 		 input = "<input type='text' name=" + index +" id= "+ index +" value=''  />";
+						 	}					
+						 	var fieldDiv = divFieldContain.append(label).append(inputDiv.append(input));
+							mainDiv.append(fieldDiv);
+					}); 
+		
+						var btnSubmit =	$("<div class='addressFields ui-btn ui-input-btn ui-btn-b ui-corner-all ui-shadow ui-btn-inline ui-icon-check ui-btn-icon-left'>Submit<input type='button' data-role='button' data-icon='check' data-theme='b' data-inline='true' value='Submit'></div>");
+						var btnCancel =	$("<div class='addressFields ui-btn ui-input-btn ui-btn-b ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left'>Cancel<input type='button' data-role='button' data-icon='delete' data-theme='b' data-inline='true' value='Cancel'></div>");
+						mainDiv.append(btnSubmit).append(btnCancel);
+
+				};
+				
+				var viewPersonalInfo = $("#personalInfoHeader");
+         		var personalInfoFieldsDiv = $("#personalInfoFields");
+         		var personalInfoEditBtn = $("#editPersonalInfoBtn");
+         	  $("#loginPage").on("pageshow", function () {
+         		
+         		viewPersonalInfo.on('click',function(){	
+         			
+         			if(personalInfoFieldsDiv.has("#readOnlyaddressFields").length < 1)
+         				  readOnlyInputHTML(personalInfoFieldsDiv, PersonalInfo);
+         			else{
+         				personalInfoFieldsDiv.children(".addressFields").hide();
+         				personalInfoFieldsDiv.children(".readOnlyaddressFields").show();
+         				 personalInfoEditBtn.closest('.ui-btn').show();
+         			}	 
+				});
+				personalInfoEditBtn.on('click',function(){
+					personalInfoFieldsDiv.children(".readOnlyaddressFields").hide();
+					 personalInfoEditBtn.closest('.ui-btn').hide();
+					writeInputHTML(personalInfoFieldsDiv, PersonalInfo);
+
+				}); 
+			});	 	
+		</script>
+	</div></body>
+</html>
